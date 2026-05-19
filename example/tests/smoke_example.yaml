@@ -1,5 +1,5 @@
-displayName: "Example smoke (replace goals for your app)"
+displayName: "Example app smoke test"
 steps:
-  - goal: "Launch the app and confirm the main screen is visible"
-  - goal: "Navigate using the primary navigation control if one exists"
-    assertion: "No crash; at least one interactive screen is shown"
+  - goal: "Launch the app and verify the home screen is visible"
+  - goal: "Confirm the screen shows Android only and firebase_agent_ci setup instructions"
+    assertion: "Main screen loads without crashing"
