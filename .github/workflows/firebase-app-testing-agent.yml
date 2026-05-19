@@ -58,21 +58,39 @@ jobs:
           FIREBASE_SA_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: printf '%s' "$FIREBASE_SA_JSON" > sa.json
 
+      - name: Validate Firebase App ID secret
+        env:
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+        run: |
+          APP_ID="$(printf '%s' "$FIREBASE_APP_ID" | tr -d '[:space:]')"
+          if ! printf '%s' "$APP_ID" | grep -Eq '^1:[0-9]+:android:[a-f0-9]+$'; then
+            echo "FIREBASE_APP_ID secret is invalid."
+            echo "It must look like: 1:23964225660:android:80e257045351391730f9f9"
+            echo "Find it in Firebase Console -> Project settings -> Your apps -> App ID"
+            echo "Do NOT use project id, project number, or package name."
+            exit 1
+          fi
+          printf '%s' "$APP_ID" > .firebase_app_id
+
       - name: Upload APK to App Distribution
         env:
           GOOGLE_APPLICATION_CREDENTIALS: sa.json
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
         run: |
+          APP_ID="$(tr -d '[:space:]' < .firebase_app_id)"
           firebase appdistribution:distribute ./build/app/outputs/flutter-apk/app-debug.apk \
-            --app="${{ secrets.FIREBASE_APP_ID }}" \
+            --app="$APP_ID" \
             --release-notes "CI build ${GITHUB_SHA} on ${GITHUB_REF_NAME}"
 
       - name: Run Firebase App Testing Agent
         id: run_tests
         env:
           GOOGLE_APPLICATION_CREDENTIALS: sa.json
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
         run: |
+          APP_ID="$(tr -d '[:space:]' < .firebase_app_id)"
           firebase apptesting:execute \
-            --app="${{ secrets.FIREBASE_APP_ID }}" \
+            --app="$APP_ID" \
             --test-dir=./tests
 
       - name: Firebase App Distribution console
