@@ -86,11 +86,11 @@ jobs:
             --test-devices "$DEVICES" || {
               echo ""
               echo "=== App Testing Agent failed ==="
-              echo "Common fixes:"
-              echo "1. Upgrade Firebase project to Blaze plan (required for App Testing Agent / Gemini)"
-              echo "2. Enable Gemini in Firebase Console for this project"
-              echo "3. GCP IAM: grant firebase-adminsdk Editor + Firebase Quality Admin + App Distribution Admin"
-              echo "4. Enable Firebase App Distribution API in GCP APIs library"
+              echo "Common fixes for 403 on POST .../releases/.../tests:"
+              echo "1. GCP IAM: grant service account Editor + Firebase App Distribution Admin + Firebase Quality Admin"
+              echo "2. Opt in to App Testing Agent preview in Firebase Console (App Distribution)"
+              echo "3. Ensure FIREBASE_SERVICE_ACCOUNT_JSON matches the IAM-updated service account"
+              echo "4. Upgrade to Blaze and enable Gemini in Firebase if preview enrollment requires it"
               exit 1
             }
 
