@@ -7,10 +7,8 @@ void main() {
   test('encode then decode round-trip', () {
     const original = AppAgentTestCase(
       displayName: 'Login Flow',
+      id: 'login',
       filename: 'login.yaml',
-      devices: [
-        'model=Pixel6,version=33,locale=en,orientation=portrait',
-      ],
       steps: [
         AppAgentTestStep(goal: 'Open login'),
         AppAgentTestStep(
@@ -25,15 +23,14 @@ void main() {
     );
 
     final yaml = codec.encode(original);
-    expect(yaml, contains('displayName: "Login Flow"'));
-    expect(yaml, contains('devices:'));
-    expect(yaml, contains('model=Pixel6,version=33,locale=en,orientation=portrait'));
-    expect(yaml, contains('hint: "Dismiss keyboard first"'));
-    expect(yaml, contains('assertion: "User name visible"'));
+    expect(yaml, contains('tests:'));
+    expect(yaml, contains('displayName: Login Flow'));
+    expect(yaml, contains('id: login'));
+    expect(yaml, contains('finalScreenAssertion: User name visible'));
 
     final parsed = codec.decode(yaml, filename: 'login.yaml');
     expect(parsed.displayName, 'Login Flow');
-    expect(parsed.devices, original.devices);
+    expect(parsed.id, 'login');
     expect(parsed.validSteps.length, 3);
     expect(parsed.validSteps[1].hint, 'Dismiss keyboard first');
   });

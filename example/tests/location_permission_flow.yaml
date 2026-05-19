@@ -1,7 +1,0 @@
-displayName: "Location Permission Flow"
-steps:
-  - goal: "Open the app and navigate to the location permission screen"
-  - goal: "Tap Allow on the location permission dialog"
-    hint: "If the system dialog does not appear, tap Enable Location button first"
-  - goal: "Verify the main map view loads with a location pin"
-    assertion: "The map screen should be visible and show user location"

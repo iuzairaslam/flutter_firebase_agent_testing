@@ -92,7 +92,25 @@ abstract final class RecommendedAppAgentTestTemplates {
     );
   }
 
+  static AppAgentTestCase exampleAppSmoke() {
+    return const AppAgentTestCase(
+      displayName: 'Example app smoke test',
+      id: 'example-app-smoke',
+      filename: 'smoke_example.yaml',
+      steps: [
+        AppAgentTestStep(
+          goal: 'Launch the app and verify the home screen is visible',
+        ),
+        AppAgentTestStep(
+          goal: 'Confirm the screen shows Android only and firebase_agent_ci setup instructions',
+          assertion: 'Main screen loads without crashing',
+        ),
+      ],
+    );
+  }
+
   static List<AppAgentTestCase> all({List<String>? devices}) => [
+        exampleAppSmoke(),
         locationPermissionFlow(devices: devices),
         onboardingSmoke(devices: devices),
         coreNavigation(devices: devices),

@@ -1,5 +1,7 @@
-displayName: "Example app smoke test"
-steps:
-  - goal: "Launch the app and verify the home screen is visible"
-  - goal: "Confirm the screen shows Android only and firebase_agent_ci setup instructions"
-    assertion: "Main screen loads without crashing"
+tests:
+- displayName: Example app smoke test
+  id: example-app-smoke
+  steps:
+  - goal: Launch the app and verify the home screen is visible
+  - goal: Confirm the screen shows Android only and firebase_agent_ci setup instructions
+    finalScreenAssertion: Main screen loads without crashing

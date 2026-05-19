@@ -1,7 +1,0 @@
-displayName: "Core Navigation Test"
-steps:
-  - goal: "Navigate to each main tab in the bottom navigation bar"
-  - goal: "Open the Settings or Profile screen"
-    assertion: "Settings screen should load without crashing"
-  - goal: "Navigate back to the home screen using back button or tab"
-    assertion: "Home screen should be visible and functional"

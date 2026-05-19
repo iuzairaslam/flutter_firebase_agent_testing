@@ -1,7 +1,0 @@
-displayName: "Onboarding Smoke Test"
-steps:
-  - goal: "Launch the app from cold start and verify splash screen appears"
-  - goal: "Complete the onboarding flow by tapping through all intro screens"
-    hint: "Swipe left or tap Next to advance each onboarding slide"
-  - goal: "Verify the Get Started or Sign In screen is shown at the end"
-    assertion: "A login or registration option should be visible"

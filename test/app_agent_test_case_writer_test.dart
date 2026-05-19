@@ -25,7 +25,8 @@ void main() {
     expect(await file.exists(), isTrue);
     expect(p.basename(file.path), 'smoke.yaml');
     final body = await file.readAsString();
-    expect(body, contains('displayName: "Smoke"'));
-    expect(body, contains('goal: "Launch app"'));
+    expect(body, contains('tests:'));
+    expect(body, contains('displayName: Smoke'));
+    expect(body, contains('goal: Launch app'));
   });
 }
