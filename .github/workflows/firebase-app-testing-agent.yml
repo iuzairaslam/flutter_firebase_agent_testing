@@ -66,33 +66,33 @@ jobs:
           if ! printf '%s' "$APP_ID" | grep -Eq '^1:[0-9]+:android:[a-f0-9]+$'; then
             echo "FIREBASE_APP_ID secret is invalid."
             echo "It must look like: 1:23964225660:android:80e257045351391730f9f9"
-            echo "Find it in Firebase Console -> Project settings -> Your apps -> App ID"
-            echo "Do NOT use project id, project number, or package name."
             exit 1
           fi
           printf '%s' "$APP_ID" > .firebase_app_id
-
-      - name: Upload APK to App Distribution
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: sa.json
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-        run: |
-          APP_ID="$(tr -d '[:space:]' < .firebase_app_id)"
-          firebase appdistribution:distribute ./build/app/outputs/flutter-apk/app-debug.apk \
-            --app="$APP_ID" \
-            --release-notes "CI build ${GITHUB_SHA} on ${GITHUB_REF_NAME}"
 
       - name: Run Firebase App Testing Agent
         id: run_tests
         env:
           GOOGLE_APPLICATION_CREDENTIALS: sa.json
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          FIREBASE_DEBUG: true
+          DEBUG: '*'
         run: |
           APP_ID="$(tr -d '[:space:]' < .firebase_app_id)"
-          firebase apptesting:execute \
+          APK="./build/app/outputs/flutter-apk/app-debug.apk"
+          DEVICES='model=MediumPhone.arm,version=36,locale=en_US,orientation=portrait'
+          firebase --debug apptesting:execute "$APK" \
             --app="$APP_ID" \
             --test-dir=./tests \
-            --test-devices "model=MediumPhone.arm,version=35,locale=en,orientation=portrait"
+            --test-devices "$DEVICES" || {
+              echo ""
+              echo "=== App Testing Agent failed ==="
+              echo "Common fixes:"
+              echo "1. Upgrade Firebase project to Blaze plan (required for App Testing Agent / Gemini)"
+              echo "2. Enable Gemini in Firebase Console for this project"
+              echo "3. GCP IAM: grant firebase-adminsdk Editor + Firebase Quality Admin + App Distribution Admin"
+              echo "4. Enable Firebase App Distribution API in GCP APIs library"
+              exit 1
+            }
 
       - name: Firebase App Distribution console
         if: always()
