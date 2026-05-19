@@ -143,24 +143,37 @@ $cachePathBlock
       - name: Build Debug APK
         run: $buildApkCommand
 
+      - name: Verify APK exists
+        run: ls -la $apkArtifactPath
+
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Firebase App Distribution console
-        run: echo "Open App Testing results at https://console.firebase.google.com/project/$firebaseProjectIdForConsoleLink/appdistribution"
-
       - name: Write Firebase Service Account
-        run: echo '\${{ secrets.$serviceAccountSecretName }}' > $serviceAccountFileName
+        env:
+          FIREBASE_SA_JSON: \${{ secrets.$serviceAccountSecretName }}
+        run: printf '%s' "\$FIREBASE_SA_JSON" > $serviceAccountFileName
+
+      - name: Upload APK to App Distribution
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: $serviceAccountFileName
+        run: |
+          firebase appdistribution:distribute ./$apkArtifactPath \\
+            --app="\${{ secrets.$firebaseAppIdSecretName }}" \\
+            --release-notes "CI build \${GITHUB_SHA} on \${GITHUB_REF_NAME}"
 
       - name: Run Firebase App Testing Agent
         id: $runTestsStepId
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $serviceAccountFileName
-        run: >
-          firebase apptesting:execute
-          --app="\${{ secrets.$firebaseAppIdSecretName }}"
-          --test-dir=$testDirRelative
-          ./$apkArtifactPath
+        run: |
+          firebase apptesting:execute \\
+            --app="\${{ secrets.$firebaseAppIdSecretName }}" \\
+            --test-dir=$testDirRelative
+
+      - name: Firebase App Distribution console
+        if: always()
+        run: echo "https://console.firebase.google.com/project/$firebaseProjectIdForConsoleLink/appdistribution"
 $emailBlock$artifactBlock
 ''';
   }
