@@ -156,11 +156,11 @@ $cachePathBlock
         id: $runTestsStepId
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $serviceAccountFileName
-        run: |
-          firebase apptesting:execute \\
-            --app=\${{ secrets.$firebaseAppIdSecretName }} \\
-            --test-dir=$testDirRelative \\
-            $apkArtifactPath
+        run: >
+          firebase apptesting:execute
+          --app="\${{ secrets.$firebaseAppIdSecretName }}"
+          --test-dir=$testDirRelative
+          ./$apkArtifactPath
 $emailBlock$artifactBlock
 ''';
   }
