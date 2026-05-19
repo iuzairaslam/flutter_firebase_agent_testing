@@ -2,7 +2,6 @@ tests:
 - displayName: Example app smoke test
   id: example-app-smoke
   steps:
-  - goal: Launch the app and verify the home screen is visible
-    finalScreenAssertion: The app home screen is visible without errors
-  - goal: Confirm the screen shows Android only and firebase_agent_ci setup instructions
-    finalScreenAssertion: Main screen loads without crashing
+  - goal: Open the app and wait for the main demo screen to load
+    hint: This is a single-screen demo app. Dismiss any system dialogs. Do not sign in. The main screen shows setup instructions and sample YAML.
+    finalScreenAssertion: The text "Android only" is visible on screen

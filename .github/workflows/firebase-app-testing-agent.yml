@@ -86,11 +86,8 @@ jobs:
             --test-devices "$DEVICES" || {
               echo ""
               echo "=== App Testing Agent failed ==="
-              echo "Common fixes for 403 on POST .../releases/.../tests:"
-              echo "1. GCP IAM: grant service account Editor + Firebase App Distribution Admin + Firebase Quality Admin"
-              echo "2. Opt in to App Testing Agent preview in Firebase Console (App Distribution)"
-              echo "3. Ensure FIREBASE_SERVICE_ACCOUNT_JSON matches the IAM-updated service account"
-              echo "4. Upgrade to Blaze and enable Gemini in Firebase if preview enrollment requires it"
+              echo "If 403 on POST .../releases/.../tests: add Editor + App Distribution Admin + Quality Admin to the service account."
+              echo "If FAILED_AI_STEP: open App Distribution → release → App Testing agent tab for screenshots; use concrete finalScreenAssertion text visible on screen."
               exit 1
             }
 
