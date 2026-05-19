@@ -1,0 +1,27 @@
+name: flutter_firebase_agent_testing
+description: Dynamic YAML test cases, CI workflow generation, and local execution helpers for Firebase App Testing Agent (Gemini).
+version: 0.1.0
+homepage: https://github.com/example/flutter_firebase_agent_testing
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=3.22.0"
+
+dependencies:
+  args: ^2.5.0
+  flutter:
+    sdk: flutter
+  meta: ^1.12.0
+  yaml: ^3.1.2
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: false
+
+executables:
+  firebase_agent_ci:

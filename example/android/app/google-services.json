@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "23964225660",
+    "project_id": "rebase-agent-testing",
+    "storage_bucket": "rebase-agent-testing.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23964225660:android:80e257045351391730f9f9",
+        "android_client_info": {
+          "package_name": "com.example.firebase_agent.firebase_agent_example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcagsUXXAk4xyXFy8nOPUnDQsLmO5Msog"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,5 @@
+displayName: "Example smoke (replace goals for your app)"
+steps:
+  - goal: "Launch the app and confirm the main screen is visible"
+  - goal: "Navigate using the primary navigation control if one exists"
+    assertion: "No crash; at least one interactive screen is shown"

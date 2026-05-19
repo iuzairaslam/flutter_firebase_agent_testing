@@ -1,0 +1,8 @@
+displayName: "Crash Regression Test"
+steps:
+  - goal: "Rapidly switch between all main screens multiple times"
+    hint: "Tap each bottom tab 3 times quickly then move to next"
+  - goal: "Attempt to perform the main app action without granting permissions"
+    assertion: "App should show an error message, not crash"
+  - goal: "Put the app in background for 5 seconds then foreground it"
+    assertion: "App should resume correctly without any crash or blank screen"

@@ -1,0 +1,30 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+.pub/
+build/
+**/build/
+.pub-cache/
+/pubspec.lock
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Android
+**/local.properties
+**/.gradle/
+
+# Secrets — never commit service account keys
+*service*account*.json
+*-firebase-adminsdk-*.json
+sa.json
+firebase-service-account.json
+
+# Env
+.env
+.env.*
