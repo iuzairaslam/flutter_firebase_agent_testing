@@ -91,7 +91,8 @@ jobs:
           APP_ID="$(tr -d '[:space:]' < .firebase_app_id)"
           firebase apptesting:execute \
             --app="$APP_ID" \
-            --test-dir=./tests
+            --test-dir=./tests \
+            --test-devices "model=MediumPhone.arm,version=35,locale=en,orientation=portrait"
 
       - name: Firebase App Distribution console
         if: always()

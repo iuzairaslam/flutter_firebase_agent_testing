@@ -27,6 +27,8 @@ class GitHubActionsWorkflowConfig {
     this.includeEmailStep = true,
     this.includeArtifactUpload = true,
     this.cachePaths = const ['~/.pub-cache', '~/.gradle/caches'],
+    this.testDevices =
+        'model=MediumPhone.arm,version=35,locale=en,orientation=portrait',
   });
 
   final String workflowName;
@@ -53,6 +55,7 @@ class GitHubActionsWorkflowConfig {
   final bool includeEmailStep;
   final bool includeArtifactUpload;
   final List<String> cachePaths;
+  final String testDevices;
 
   /// Generates `.github/workflows/<fileName>` content (default file name: sanitized workflow name).
   String generateYaml({String? fileName}) {
@@ -169,7 +172,8 @@ $cachePathBlock
         run: |
           firebase apptesting:execute \\
             --app="\${{ secrets.$firebaseAppIdSecretName }}" \\
-            --test-dir=$testDirRelative
+            --test-dir=$testDirRelative \\
+            --test-devices "$testDevices"
 
       - name: Firebase App Distribution console
         if: always()
