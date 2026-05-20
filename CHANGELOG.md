@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-05-21
+
+### Added
+
+- Cover image at the top of the README.
+
 ## [1.0.0] - 2026-05-20
 
 ### Added
@@ -28,4 +34,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - App ID validation and service-account JSON handling in generated workflows.
 - Test YAML guidance: concrete `finalScreenAssertion` text for reliable agent runs.
 
+[1.0.1]: https://github.com/iuzairaslam/flutter_firebase_agent_testing/releases/tag/v1.0.1
 [1.0.0]: https://github.com/iuzairaslam/flutter_firebase_agent_testing/releases/tag/v1.0.0
