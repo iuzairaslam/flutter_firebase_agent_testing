@@ -95,7 +95,7 @@ Add to your Flutter project's `pubspec.yaml`:
 
 ```yaml
 dev_dependencies:
-  flutter_firebase_agent_testing: ^0.1.0
+  flutter_firebase_agent_testing: ^1.0.0
 ```
 
 Or from a local path / git:
@@ -310,6 +310,24 @@ Yes — use `--test-non-blocking` on the Firebase CLI (or edit the generated wor
 | `example/` | A small 3-screen demo app with passing agent tests |
 | `example/tests/` | Real, working YAML test cases |
 | `.github/workflows/` | The repo's own CI (which also tests this package end-to-end) |
+
+---
+
+## Publishing to pub.dev
+
+This package is intended for publication on [pub.dev](https://pub.dev/packages/flutter_firebase_agent_testing).
+
+Maintainers: bump `version` in `pubspec.yaml`, update `CHANGELOG.md`, then:
+
+```bash
+dart pub publish
+```
+
+Users install with:
+
+```bash
+flutter pub add --dev flutter_firebase_agent_testing
+```
 
 ---
 

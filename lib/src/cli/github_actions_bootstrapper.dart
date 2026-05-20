@@ -152,9 +152,7 @@ class GitHubActionsBootstrapper {
       javaDistribution: base?.javaDistribution ?? 'temurin',
       flutterVersion: base?.flutterVersion ?? '3.x',
       flutterChannel: base?.flutterChannel ?? 'stable',
-      cacheKeyHashFiles: base?.cacheKeyHashFiles ?? "**/pubspec.lock",
-      buildApkCommand: base?.buildApkCommand ??
-          'flutter build apk --release --no-tree-shake-icons',
+      cacheKeyHashFiles: base?.cacheKeyHashFiles ?? '**/pubspec.lock',
       apkArtifactPath: base?.apkArtifactPath ??
           'build/app/outputs/flutter-apk/app-release.apk',
       testDirRelative: base?.testDirRelative ?? './tests',
@@ -171,6 +169,8 @@ class GitHubActionsBootstrapper {
       includeArtifactUpload: includeArtifactUpload,
       cachePaths:
           base?.cachePaths ?? const ['~/.pub-cache', '~/.gradle/caches'],
+      testDevices: base?.testDevices ??
+          'model=MediumPhone.arm,version=36,locale=en_US,orientation=portrait',
     );
   }
 }

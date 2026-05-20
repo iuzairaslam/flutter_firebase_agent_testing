@@ -80,7 +80,10 @@ class AppAgentYamlCodec {
     List<String>? devices;
     final devNode = root['devices'];
     if (devNode is YamlList) {
-      devices = devNode.map((e) => e.toString()).where((s) => s.trim().isNotEmpty).toList();
+      devices = devNode
+          .map((e) => e.toString())
+          .where((s) => s.trim().isNotEmpty)
+          .toList();
       if (devices.isEmpty) devices = null;
     }
 
@@ -100,7 +103,8 @@ class AppAgentYamlCodec {
             : item['assertion'] is String
                 ? item['assertion'] as String
                 : null;
-        steps.add(AppAgentTestStep(goal: goal, hint: hint, assertion: assertion));
+        steps.add(
+            AppAgentTestStep(goal: goal, hint: hint, assertion: assertion));
       } else if (item is String) {
         steps.add(AppAgentTestStep(goal: item));
       }

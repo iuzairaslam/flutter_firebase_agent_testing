@@ -34,10 +34,12 @@ abstract final class RecommendedAppAgentTestTemplates {
       devices: devices,
       steps: const [
         AppAgentTestStep(
-          goal: 'Launch the app from cold start and verify splash screen appears',
+          goal:
+              'Launch the app from cold start and verify splash screen appears',
         ),
         AppAgentTestStep(
-          goal: 'Complete the onboarding flow by tapping through all intro screens',
+          goal:
+              'Complete the onboarding flow by tapping through all intro screens',
           hint: 'Swipe left or tap Next to advance each onboarding slide',
         ),
         AppAgentTestStep(
@@ -80,7 +82,8 @@ abstract final class RecommendedAppAgentTestTemplates {
           hint: 'Tap each bottom tab 3 times quickly then move to next',
         ),
         AppAgentTestStep(
-          goal: 'Attempt to perform the main app action without granting permissions',
+          goal:
+              'Attempt to perform the main app action without granting permissions',
           assertion: 'App should show an error message, not crash',
         ),
         AppAgentTestStep(
@@ -102,7 +105,8 @@ abstract final class RecommendedAppAgentTestTemplates {
           goal: 'Launch the app and verify the home screen is visible',
         ),
         AppAgentTestStep(
-          goal: 'Confirm the screen shows Android only and firebase_agent_ci setup instructions',
+          goal:
+              'Confirm the screen shows Android only and firebase_agent_ci setup instructions',
           assertion: 'Main screen loads without crashing',
         ),
       ],

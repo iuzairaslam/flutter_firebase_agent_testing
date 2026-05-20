@@ -12,7 +12,8 @@ void main() {
       ],
       releaseNotes: 'CI build',
     );
-    final cmd = const CiPlatformSnippets().firebaseAppDistributionDistributeCommand(o);
+    final cmd =
+        const CiPlatformSnippets().firebaseAppDistributionDistributeCommand(o);
     expect(cmd, contains('appdistribution:distribute'));
     expect(cmd, contains('--test-case-ids'));
     expect(cmd, contains('a,b'));

@@ -46,8 +46,9 @@ class AppAgentTestCase {
     return AppAgentTestCase(
       displayName: displayName ?? this.displayName,
       id: id ?? this.id,
-      prerequisiteTestCaseId:
-          clearPrerequisite ? null : (prerequisiteTestCaseId ?? this.prerequisiteTestCaseId),
+      prerequisiteTestCaseId: clearPrerequisite
+          ? null
+          : (prerequisiteTestCaseId ?? this.prerequisiteTestCaseId),
       devices: clearDevices ? null : (devices ?? this.devices),
       steps: steps ?? this.steps,
       filename: clearFilename ? null : (filename ?? this.filename),
@@ -66,6 +67,7 @@ class AppAgentTestCase {
         .replaceAll(RegExp(r'[^a-z0-9]+'), '-')
         .replaceAll(RegExp(r'^-+|-+$'), '');
   }
+
   void validate() {
     if (displayName.trim().isEmpty) {
       throw StateError('displayName must not be empty');

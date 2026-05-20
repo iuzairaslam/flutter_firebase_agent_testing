@@ -51,8 +51,16 @@ void main() {
     );
     final y = cfg.generateYaml();
     expect(y, contains('name: Firebase App Testing Agent CI'));
+    expect(y, contains("tags:"));
+    expect(y, contains("'v*'"));
+    expect(y, contains('workflow_dispatch'));
+    expect(y, contains('Resolve version from tag'));
+    expect(y, contains('Validate Firebase App ID secret'));
     expect(y, contains('firebase apptesting:execute'));
     expect(y, contains('--test-dir=./tests'));
+    expect(y, contains('--test-devices'));
+    expect(y, contains('app-release.apk'));
     expect(y, isNot(contains('Send Email Report')));
+    expect(y, isNot(contains('appdistribution:distribute')));
   });
 }

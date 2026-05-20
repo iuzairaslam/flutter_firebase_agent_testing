@@ -19,7 +19,8 @@ firebase apptesting:execute \\
   --app=\$$firebaseAppIdEnvVar \\
   --test-dir=$testDir \\
   \$BITRISE_SOURCE_DIR/$apkRelative
-'''.trim();
+'''
+        .trim();
   }
 
   String codemagicAppTestingExecute({
@@ -35,7 +36,8 @@ firebase apptesting:execute \\
   --app=\$$firebaseAppIdEnvVar \\
   --test-dir=$testDir \\
   $apkPath
-'''.trim();
+'''
+        .trim();
   }
 
   String fastlaneLaneBody({
@@ -48,11 +50,13 @@ sh("firebase apptesting:execute \\\\
 --app=#{ENV['$firebaseAppIdEnv']} \\\\
 --test-dir=$testDir \\\\
 $apkRelative")
-'''.trim();
+'''
+        .trim();
   }
 
   /// `firebase appdistribution:distribute` with optional test case IDs (Method B).
-  String firebaseAppDistributionDistributeCommand(AppDistributionDistributeOptions o) {
+  String firebaseAppDistributionDistributeCommand(
+      AppDistributionDistributeOptions o) {
     final parts = <String>[
       'firebase appdistribution:distribute',
       _shellQuote(o.apkPath),

@@ -27,7 +27,8 @@ class AppAgentTestCaseWriter {
     if (!await dir.exists()) {
       await dir.create(recursive: true);
     }
-    final file = File(p.join(dir.path, name.endsWith('.yaml') ? name : '$name.yaml'));
+    final file =
+        File(p.join(dir.path, name.endsWith('.yaml') ? name : '$name.yaml'));
     await file.writeAsString(_codec.encode(testCase, validate: validate));
     return file;
   }

@@ -13,8 +13,7 @@ class GitHubActionsWorkflowConfig {
     this.javaDistribution = 'temurin',
     this.flutterVersion = '3.x',
     this.flutterChannel = 'stable',
-    this.cacheKeyHashFiles = "**/pubspec.lock",
-    this.buildApkCommand = 'flutter build apk --release --no-tree-shake-icons',
+    this.cacheKeyHashFiles = '**/pubspec.lock',
     this.apkArtifactPath = 'build/app/outputs/flutter-apk/app-release.apk',
     this.testDirRelative = './tests',
     this.serviceAccountSecretName = 'FIREBASE_SERVICE_ACCOUNT_JSON',
@@ -27,7 +26,7 @@ class GitHubActionsWorkflowConfig {
     this.includeArtifactUpload = true,
     this.cachePaths = const ['~/.pub-cache', '~/.gradle/caches'],
     this.testDevices =
-        'model=MediumPhone.arm,version=35,locale=en,orientation=portrait',
+        'model=MediumPhone.arm,version=36,locale=en_US,orientation=portrait',
   });
 
   final String workflowName;
@@ -42,7 +41,6 @@ class GitHubActionsWorkflowConfig {
   final String flutterVersion;
   final String flutterChannel;
   final String cacheKeyHashFiles;
-  final String buildApkCommand;
   final String apkArtifactPath;
   final String testDirRelative;
   final String serviceAccountSecretName;
@@ -80,7 +78,7 @@ class GitHubActionsWorkflowConfig {
             Firebase App Testing Agent run complete.
 
             Result  : \${{ steps.$runTestsStepId.outcome == 'success' && 'ALL TESTS PASSED' || 'TESTS FAILED' }}
-            Branch  : \${{ github.ref_name }}
+            Tag     : \${{ github.ref_name }}
             Commit  : \${{ github.sha }}
             Trigger : \${{ github.actor }}
 
@@ -139,8 +137,20 @@ $cachePathBlock
       - name: Flutter pub get
         run: flutter pub get
 
+      - name: Resolve version from tag
+        run: |
+          if [[ "\${{ github.ref_type }}" == "tag" ]]; then
+            echo "APP_VERSION=\${GITHUB_REF_NAME#v}" >> "\$GITHUB_ENV"
+          else
+            echo "APP_VERSION=0.0.0-\${{ github.run_number }}" >> "\$GITHUB_ENV"
+          fi
+          echo "BUILD_NUMBER=\${{ github.run_number }}" >> "\$GITHUB_ENV"
+
       - name: Build Release APK
-        run: $buildApkCommand
+        run: |
+          flutter build apk --release --no-tree-shake-icons \\
+            --build-name="\$APP_VERSION" \\
+            --build-number="\$BUILD_NUMBER"
 
       - name: Verify APK exists
         run: ls -la $apkArtifactPath
@@ -153,23 +163,36 @@ $cachePathBlock
           FIREBASE_SA_JSON: \${{ secrets.$serviceAccountSecretName }}
         run: printf '%s' "\$FIREBASE_SA_JSON" > $serviceAccountFileName
 
-      - name: Upload APK to App Distribution
+      - name: Validate Firebase App ID secret
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $serviceAccountFileName
+          FIREBASE_APP_ID: \${{ secrets.$firebaseAppIdSecretName }}
         run: |
-          firebase appdistribution:distribute ./$apkArtifactPath \\
-            --app="\${{ secrets.$firebaseAppIdSecretName }}" \\
-            --release-notes "CI build \${GITHUB_SHA} on \${GITHUB_REF_NAME}"
+          APP_ID="\$(printf '%s' "\$FIREBASE_APP_ID" | tr -d '[:space:]')"
+          if ! printf '%s' "\$APP_ID" | grep -Eq '^1:[0-9]+:android:[a-f0-9]+\$'; then
+            echo "FIREBASE_APP_ID secret is invalid."
+            echo "It must look like: 1:1234567890:android:abc123def456"
+            exit 1
+          fi
+          printf '%s' "\$APP_ID" > .firebase_app_id
 
       - name: Run Firebase App Testing Agent
         id: $runTestsStepId
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $serviceAccountFileName
         run: |
-          firebase apptesting:execute \\
-            --app="\${{ secrets.$firebaseAppIdSecretName }}" \\
+          APP_ID="\$(tr -d '[:space:]' < .firebase_app_id)"
+          APK="./$apkArtifactPath"
+          DEVICES='$testDevices'
+          firebase apptesting:execute "\$APK" \\
+            --app="\$APP_ID" \\
             --test-dir=$testDirRelative \\
-            --test-devices "$testDevices"
+            --test-devices "\$DEVICES" || {
+              echo ""
+              echo "=== App Testing Agent failed ==="
+              echo "If 403 on POST .../releases/.../tests: add Editor + App Distribution Admin + Quality Admin to the service account."
+              echo "If FAILED_AI_STEP: open App Distribution → release → App Testing agent tab for screenshots; use concrete finalScreenAssertion text visible on screen."
+              exit 1
+            }
 
       - name: Firebase App Distribution console
         if: always()

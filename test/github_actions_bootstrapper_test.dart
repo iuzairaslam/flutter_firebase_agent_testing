@@ -18,18 +18,21 @@ void main() {
     final root = await Directory.systemTemp.createTemp('ffb_root_');
     final nested = Directory(p.join(root.path, 'a', 'b'));
     await nested.create(recursive: true);
-    await File(p.join(root.path, 'pubspec.yaml')).writeAsString(_flutterPubspec);
+    await File(p.join(root.path, 'pubspec.yaml'))
+        .writeAsString(_flutterPubspec);
     addTearDown(() async {
       if (await root.exists()) await root.delete(recursive: true);
     });
 
-    final found = await GitHubActionsBootstrapper.findFlutterProjectRoot(nested);
+    final found =
+        await GitHubActionsBootstrapper.findFlutterProjectRoot(nested);
     expect(found, root.path);
   });
 
   test('bootstrap writes workflow', () async {
     final root = await Directory.systemTemp.createTemp('ffb_ci_');
-    await File(p.join(root.path, 'pubspec.yaml')).writeAsString(_flutterPubspec);
+    await File(p.join(root.path, 'pubspec.yaml'))
+        .writeAsString(_flutterPubspec);
     addTearDown(() async {
       if (await root.exists()) await root.delete(recursive: true);
     });
@@ -54,12 +57,15 @@ void main() {
     final body = await wf.readAsString();
     expect(body, contains('firebase apptesting:execute'));
     expect(body, contains('secrets.FIREBASE_APP_ID'));
+    expect(body, contains("tags:"));
+    expect(body, contains("'v*'"));
     expect(body, contains('console.firebase.google.com/project/proj-x/'));
   });
 
   test('bootstrap refuses overwrite without force', () async {
     final root = await Directory.systemTemp.createTemp('ffb_ci2_');
-    await File(p.join(root.path, 'pubspec.yaml')).writeAsString(_flutterPubspec);
+    await File(p.join(root.path, 'pubspec.yaml'))
+        .writeAsString(_flutterPubspec);
     addTearDown(() async {
       if (await root.exists()) await root.delete(recursive: true);
     });

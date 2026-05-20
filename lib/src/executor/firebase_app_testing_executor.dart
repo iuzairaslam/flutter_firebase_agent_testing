@@ -101,8 +101,12 @@ class FirebaseAppTestingExecutor {
     );
     return FirebaseAppTestingExecuteResult(
       exitCode: result.exitCode,
-      stdout: result.stdout is String ? result.stdout as String : '${result.stdout}',
-      stderr: result.stderr is String ? result.stderr as String : '${result.stderr}',
+      stdout: result.stdout is String
+          ? result.stdout as String
+          : '${result.stdout}',
+      stderr: result.stderr is String
+          ? result.stderr as String
+          : '${result.stderr}',
     );
   }
 }
