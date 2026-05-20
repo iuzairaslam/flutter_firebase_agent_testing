@@ -1,6 +1,6 @@
 name: flutter_firebase_agent_testing
 description: Scaffold Firebase App Testing Agent CI for Flutter Android apps — YAML tests, GitHub Actions, and a setup CLI.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/iuzairaslam/flutter_firebase_agent_testing
 repository: https://github.com/iuzairaslam/flutter_firebase_agent_testing
 issue_tracker: https://github.com/iuzairaslam/flutter_firebase_agent_testing/issues
@@ -8,6 +8,9 @@ issue_tracker: https://github.com/iuzairaslam/flutter_firebase_agent_testing/iss
 environment:
   sdk: ^3.5.0
   flutter: ">=3.22.0"
+
+platforms:
+  android:
 
 false_secrets:
   - example/android/app/google-services.json
