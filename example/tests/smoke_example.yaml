@@ -1,7 +1,0 @@
-tests:
-- displayName: Example app smoke test
-  id: example-app-smoke
-  steps:
-  - goal: Open the app and wait for the main demo screen to load
-    hint: This is a single-screen demo app. Dismiss any system dialogs. Do not sign in. The main screen shows setup instructions and sample YAML.
-    finalScreenAssertion: The text "Android only" is visible on screen

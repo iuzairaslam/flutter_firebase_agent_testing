@@ -48,7 +48,8 @@ class GitHubActionsBootstrapper {
         final text = await pub.readAsString();
         if (text.contains('sdk: flutter') ||
             text.contains('sdk:flutter') ||
-            RegExp(r'flutter:\s*\n\s*sdk:\s*flutter', multiLine: true).hasMatch(text)) {
+            RegExp(r'flutter:\s*\n\s*sdk:\s*flutter', multiLine: true)
+                .hasMatch(text)) {
           return dir.path;
         }
       }
@@ -69,12 +70,14 @@ class GitHubActionsBootstrapper {
   }) async {
     final rootDir = Directory(projectRoot);
     if (!await rootDir.exists()) {
-      throw ArgumentError.value(projectRoot, 'projectRoot', 'Directory does not exist');
+      throw ArgumentError.value(
+          projectRoot, 'projectRoot', 'Directory does not exist');
     }
 
     final pubspec = File(p.join(rootDir.path, 'pubspec.yaml'));
     if (!await pubspec.exists()) {
-      throw StateError('Not a Dart/Flutter project (missing pubspec.yaml): ${rootDir.path}');
+      throw StateError(
+          'Not a Dart/Flutter project (missing pubspec.yaml): ${rootDir.path}');
     }
 
     final workflowDir = Directory(p.join(rootDir.path, '.github', 'workflows'));
@@ -152,11 +155,15 @@ class GitHubActionsBootstrapper {
       flutterVersion: base?.flutterVersion ?? '3.x',
       flutterChannel: base?.flutterChannel ?? 'stable',
       cacheKeyHashFiles: base?.cacheKeyHashFiles ?? "**/pubspec.lock",
-      buildApkCommand: base?.buildApkCommand ?? 'flutter build apk --debug --no-tree-shake-icons',
-      apkArtifactPath: base?.apkArtifactPath ?? 'build/app/outputs/flutter-apk/app-debug.apk',
+      buildApkCommand: base?.buildApkCommand ??
+          'flutter build apk --release --no-tree-shake-icons',
+      apkArtifactPath: base?.apkArtifactPath ??
+          'build/app/outputs/flutter-apk/app-release.apk',
       testDirRelative: base?.testDirRelative ?? './tests',
-      serviceAccountSecretName: base?.serviceAccountSecretName ?? 'FIREBASE_SERVICE_ACCOUNT_JSON',
-      firebaseAppIdSecretName: base?.firebaseAppIdSecretName ?? 'FIREBASE_APP_ID',
+      serviceAccountSecretName:
+          base?.serviceAccountSecretName ?? 'FIREBASE_SERVICE_ACCOUNT_JSON',
+      firebaseAppIdSecretName:
+          base?.firebaseAppIdSecretName ?? 'FIREBASE_APP_ID',
       gmailUserSecretName: base?.gmailUserSecretName ?? 'GMAIL_USER',
       gmailAppPasswordSecretName:
           base?.gmailAppPasswordSecretName ?? 'GMAIL_APP_PASSWORD',
@@ -164,7 +171,8 @@ class GitHubActionsBootstrapper {
       runTestsStepId: base?.runTestsStepId ?? 'run_tests',
       includeEmailStep: includeEmailStep,
       includeArtifactUpload: includeArtifactUpload,
-      cachePaths: base?.cachePaths ?? const ['~/.pub-cache', '~/.gradle/caches'],
+      cachePaths:
+          base?.cachePaths ?? const ['~/.pub-cache', '~/.gradle/caches'],
     );
   }
 }

@@ -1,0 +1,10 @@
+tests:
+- displayName: Home screen shows entry buttons
+  id: home-entry-buttons
+  steps:
+  - goal: Open the app and wait for the home screen to load
+    hint: Dismiss any system dialogs. Do not sign in. The home screen has the title "Agent Demo Home".
+    finalScreenAssertion: The text "Welcome to the Agent Demo" is visible on screen
+  - goal: Confirm the home screen exposes the Counter and Sign Up entry points
+    hint: Look for two large buttons. Do not tap them.
+    finalScreenAssertion: Both buttons labeled "Open Counter" and "Sign Up" are visible

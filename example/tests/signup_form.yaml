@@ -1,0 +1,13 @@
+tests:
+- displayName: Sign up form succeeds with valid input
+  id: signup-form-success
+  steps:
+  - goal: From the home screen, open the Sign Up form
+    hint: Tap the button labeled "Sign Up". A form with Name and Email fields should appear.
+    finalScreenAssertion: A text field labeled "Name" and a text field labeled "Email" are visible
+  - goal: Fill in the Name field with "Test User" and the Email field with "test@example.com"
+    hint: Tap the Name field first, type the name, then tap the Email field and type the email. Do not tap Submit yet.
+    finalScreenAssertion: The Name field contains "Test User" and the Email field contains "test@example.com"
+  - goal: Submit the form by tapping the Submit button
+    hint: Tap the button labeled "Submit" exactly once.
+    finalScreenAssertion: The text "Welcome, Test User!" is visible on screen

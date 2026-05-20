@@ -44,11 +44,11 @@ jobs:
       - name: Flutter pub get
         run: flutter pub get
 
-      - name: Build Debug APK
-        run: flutter build apk --debug --no-tree-shake-icons
+      - name: Build Release APK
+        run: flutter build apk --release --no-tree-shake-icons
 
       - name: Verify APK exists
-        run: ls -la build/app/outputs/flutter-apk/app-debug.apk
+        run: ls -la build/app/outputs/flutter-apk/app-release.apk
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
@@ -78,7 +78,7 @@ jobs:
           DEBUG: '*'
         run: |
           APP_ID="$(tr -d '[:space:]' < .firebase_app_id)"
-          APK="./build/app/outputs/flutter-apk/app-debug.apk"
+          APK="./build/app/outputs/flutter-apk/app-release.apk"
           DEVICES='model=MediumPhone.arm,version=36,locale=en_US,orientation=portrait'
           firebase --debug apptesting:execute "$APK" \
             --app="$APP_ID" \
@@ -99,5 +99,5 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: app-debug-apk
-          path: example/build/app/outputs/flutter-apk/app-debug.apk
+          name: app-release-apk
+          path: example/build/app/outputs/flutter-apk/app-release.apk

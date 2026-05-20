@@ -1,0 +1,10 @@
+tests:
+- displayName: Counter increments twice
+  id: counter-increment-twice
+  steps:
+  - goal: From the home screen, open the Counter screen
+    hint: Tap the button labeled "Open Counter".
+    finalScreenAssertion: The text "Counter: 0" is visible on screen
+  - goal: Tap the Increment button two times
+    hint: Tap the button labeled "Increment" exactly two times. Do not tap "Decrement" or "Reset".
+    finalScreenAssertion: The text "Counter: 2" is visible on screen

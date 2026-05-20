@@ -15,8 +15,8 @@ class GitHubActionsWorkflowConfig {
     this.flutterVersion = '3.x',
     this.flutterChannel = 'stable',
     this.cacheKeyHashFiles = "**/pubspec.lock",
-    this.buildApkCommand = 'flutter build apk --debug --no-tree-shake-icons',
-    this.apkArtifactPath = 'build/app/outputs/flutter-apk/app-debug.apk',
+    this.buildApkCommand = 'flutter build apk --release --no-tree-shake-icons',
+    this.apkArtifactPath = 'build/app/outputs/flutter-apk/app-release.apk',
     this.testDirRelative = './tests',
     this.serviceAccountSecretName = 'FIREBASE_SERVICE_ACCOUNT_JSON',
     this.firebaseAppIdSecretName = 'FIREBASE_APP_ID',
@@ -98,7 +98,7 @@ class GitHubActionsWorkflowConfig {
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: app-debug-apk
+          name: app-release-apk
           path: $apkArtifactPath
 '''
         : '';
@@ -143,7 +143,7 @@ $cachePathBlock
       - name: Flutter pub get
         run: flutter pub get
 
-      - name: Build Debug APK
+      - name: Build Release APK
         run: $buildApkCommand
 
       - name: Verify APK exists
