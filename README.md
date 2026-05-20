@@ -33,7 +33,7 @@ The only catch: Firebase makes you write a YAML file, install a CLI, set up a Gi
 ## How it works (the 30-second version)
 
 ```
-You push code to GitHub
+You push a version tag (e.g. v1.0.0) to GitHub
         ↓
 GitHub Actions builds your release APK
         ↓
@@ -45,6 +45,8 @@ It follows your plain-English test steps
         ↓
 You get pass/fail + screenshots in the Firebase Console
 ```
+
+> CI only fires on **version tags** (default: `v*`) — not every commit. This avoids burning your monthly AI-test quota on work-in-progress pushes.
 
 You write tests like this:
 
@@ -137,7 +139,18 @@ Then add **2 secrets** to your GitHub repository (Settings → Secrets → Actio
 | `FIREBASE_SERVICE_ACCOUNT_JSON` | The full contents of the JSON file you downloaded in step 3 above |
 | `FIREBASE_APP_ID` | Your App ID, e.g. `1:1234567890:android:abc123...` |
 
-Commit and push to `main`. Open the Actions tab — your first agent run is on its way. Open Firebase Console → App Distribution → your release → **App Testing agent** tab to see screenshots when it finishes.
+Now create a release tag and push it:
+
+```bash
+git add .
+git commit -m "Set up Firebase App Testing Agent"
+git tag v0.1.0
+git push origin main --tags
+```
+
+Open the Actions tab — your first agent run is on its way. Open Firebase Console → App Distribution → your release → **App Testing agent** tab to see screenshots when it finishes.
+
+> **Why tags, not every commit?** Each AI test run costs a slice of your monthly quota (200 free tests/month). Tag-based triggers mean CI runs when *you* decide a build is release-worthy — not on every WIP push. You can still run it manually from GitHub Actions → **Run workflow** any time.
 
 ---
 
@@ -240,8 +253,7 @@ dart run flutter_firebase_agent_testing:firebase_agent_ci setup [options]
 | `--no-email` | Skip the email-on-completion step |
 | `--email-to` | Comma-separated email addresses for the report (omit with `--no-email`) |
 | `--with-sample-tests` | Drop starter YAML tests into `tests/` |
-| `--branches` | Branches that trigger CI on push. Default: `main,develop` |
-| `--pr-branches` | Base branches that trigger CI on PR. Default: `main` |
+| `--tag-pattern` | Comma-separated git tag globs that trigger CI. Default: `v*` (e.g. `v1.0.0`, `v2.3.4-rc1`) |
 | `--workflow-file` | Custom filename under `.github/workflows/`. Default: `firebase-app-testing-agent.yml` |
 | `--force` | Overwrite an existing workflow |
 | `--dry-run` | Print the workflow YAML instead of writing it |

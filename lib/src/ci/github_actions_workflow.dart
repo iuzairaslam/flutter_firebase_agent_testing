@@ -8,8 +8,7 @@ class GitHubActionsWorkflowConfig {
     required this.firebaseProjectIdForConsoleLink,
     required this.emailTo,
     required this.emailFromDisplayName,
-    this.pushBranches = const ['main', 'develop'],
-    this.pullRequestBranches = const ['main'],
+    this.tagPatterns = const ['v*'],
     this.javaVersion = '17',
     this.javaDistribution = 'temurin',
     this.flutterVersion = '3.x',
@@ -36,8 +35,8 @@ class GitHubActionsWorkflowConfig {
   final String emailTo;
   final String emailFromDisplayName;
 
-  final List<String> pushBranches;
-  final List<String> pullRequestBranches;
+  /// Git tag glob patterns that trigger the workflow on push (e.g. `v*`, `release-*`).
+  final List<String> tagPatterns;
   final String javaVersion;
   final String javaDistribution;
   final String flutterVersion;
@@ -59,8 +58,7 @@ class GitHubActionsWorkflowConfig {
 
   /// Generates `.github/workflows/<fileName>` content (default file name: sanitized workflow name).
   String generateYaml({String? fileName}) {
-    final branchesPush = pushBranches.map((b) => '      - $b').join('\n');
-    final branchesPr = pullRequestBranches.map((b) => '      - $b').join('\n');
+    final tagsBlock = tagPatterns.map((t) => "      - '$t'").join('\n');
     final cachePathBlock = cachePaths.map((p) => '            $p').join('\n');
 
     final emailBlock = includeEmailStep
@@ -108,11 +106,9 @@ name: $workflowName
 
 on:
   push:
-    branches:
-$branchesPush
-  pull_request:
-    branches:
-$branchesPr
+    tags:
+$tagsBlock
+  workflow_dispatch:
 
 jobs:
   build-and-test:
