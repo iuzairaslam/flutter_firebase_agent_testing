@@ -28,4 +28,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - App ID validation and service-account JSON handling in generated workflows.
 - Test YAML guidance: concrete `finalScreenAssertion` text for reliable agent runs.
 
-[1.0.0]: https://github.com/iuzairaslam/agent-testing-repo/releases/tag/v1.0.0
+[1.0.0]: https://github.com/iuzairaslam/flutter_firebase_agent_testing/releases/tag/v1.0.0
